@@ -49,7 +49,7 @@ file { '/home/monitor/src':
 #Class for getting the script in github
 class script {
 exec {'get_script':
-  command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/ianlingat/memory_check/master/memory_check.sh -O /home/monitor/scripts/check_memory",
+  command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/melia31/Memory-Check/master/memory_check.sh -O /home/monitor/scripts/check_memory",
   creates => "/home/monitor/scripts/memory_check",
     }
 file{'/home/monitor/scripts/memory_check':
@@ -60,16 +60,16 @@ file{'/home/monitor/scripts/memory_check':
 
 #Class for creating a softlink of check_memory
 class softlink {
-file { '/home/monitor/src/my_memory_check':
+file { '/home/monitor/src/memory-check':
  ensure => link,
- target => '/home/monitor/scripts/memory_check'
+ target => '/home/monitor/scripts/memory-check'
      }
 }
 
 #Class for crontab of check_memory by using the created softlink
 class crontab {
 cron {'cron':
-        command => "sh /home/monitor/src/my_memory_check -w 60 -c 80 -e cadlingat@chikka.com",
+        command => "sh /home/monitor/src/my_memory_check -w 60 -c 90 -e rlutrania31@gamil.com",
         minute => '10',
         hour => '*',
         month => '*',
