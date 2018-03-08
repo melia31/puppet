@@ -1,19 +1,12 @@
 $packages = ['vim-enhanced','curl','git','wget']
 $scriptraw = ['wget https://raw.githubusercontent.com/melia31/Memory-Check/master/memory_check.sh']
 class package_install {
-package { 'vim-enhanced':
-    provider => yum,
-    ensure   => installed,
-        }
-package { 'curl':
-    provider => yum,
-    ensure   => installed,
-        }
-package { 'git':
-    provider => yum,
-    ensure   => installed,
-        }
-}
+  Package { ensure => 'installed' }
+
+  package { 'vim': }
+  package { 'curl': }
+  package { 'git':   }
+
 
 #Class for creating a user monitor
 class user {
@@ -26,13 +19,12 @@ class user {
        }
 }
 
-#Class for creating a directory /home/monitor/scripts
-class directory {
+   # create a directory
+class directories {
 file { '/home/monitor/scripts':
     ensure => 'directory',
-    owner  => 'monitor',
-    group  => 'monitor',
-    mode   => '700',
+  }
+
      }
 }
 
