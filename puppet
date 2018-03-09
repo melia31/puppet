@@ -67,10 +67,7 @@ class crontab {
 cron {'cron':
         command => "sh /home/monitor/src/memory-check -w 60 -c 90 -e rlutrania31@gamil.com",
         minute => '10',
-        hour => '*',
-        month => '*',
-        weekday  => '*',
-        monthday => '*',
+        
 }
 }
 
