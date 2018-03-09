@@ -1,15 +1,9 @@
-$packages = ['vim-enhanced','curl','git','wget']
-$scriptraw = ['wget https://raw.githubusercontent.com/melia31/Memory-Check/master/memory_check.sh']
+class packages {
+  Packages { ensure => 'installed' }
+  $enhancers = [ 'vim', 'curl', 'git' ]
+  packages { $enhancers: }
+}
 
-class package_install {
-  Package { ensure => 'installed' }
-
-  package { 'vim': }
-  package { 'curl': }
-  package { 'git':   }
-
-
-#Class for creating a user monitor
 class user {
 
   user { 'monitor':
@@ -17,10 +11,10 @@ class user {
     home       => '/home/monitor',
     shell      => '/bin/bash',
     managehome => true,
+  
        }
 }
 
-   # create a directory
 class directory {
 file { '/home/monitor/scripts':
     ensure => 'directory',
@@ -29,10 +23,8 @@ file { '/home/monitor/scripts':
     mode   => '755',
   }
 
-     }
 }
 
-#Class for creating a directory /home/monitor/src
 class directory_2 {
 file { '/home/monitor/src':
     ensure => 'directory',
@@ -42,7 +34,6 @@ file { '/home/monitor/src':
      }
 }
 
-#Class for getting the script in github
 class script {
 exec {'get_script':
   command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/melia31/Memory-Check/master/memory_check.sh -O /home/monitor/scripts/check_memory",
@@ -51,10 +42,8 @@ exec {'get_script':
 file{'/home/monitor/scripts/memory_check':
   mode => '755',
   require => Exec["get_script"],
-   }
 }
 
-#Class for creating a softlink of check-memory
 class softlink {
 file { '/home/monitor/src/memory-check':
  ensure => link,
@@ -62,18 +51,14 @@ file { '/home/monitor/src/memory-check':
      }
 }
 
-#Class for crontab of check_memory by using the created softlink
 class crontab {
 cron {'cron':
         command => "sh /home/monitor/src/memory-check -w 60 -c 90 -e rlutrania31@gamil.com",
         minute => '10',
-        
-}
+    }
 }
 
-#Class for node bpx.server.local
 node 'bpx.server.local' {
- include 'package_install'
  include 'user'
  include 'directory'
  include 'directory_2'
